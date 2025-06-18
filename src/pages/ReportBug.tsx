@@ -146,7 +146,7 @@ const ReportBug = () => {
             <ul className="text-sm text-gray-400 font-mono space-y-1">
               <li>• Same output repeated 3+ times in a row</li>
               <li>• More than 3 build/execution failures</li>
-              <li>• Request timeout (>30 seconds)</li>
+              <li>• Request timeout (&gt;30 seconds)</li>
               <li>• Unhandled exceptions or crashes</li>
             </ul>
           </div>
