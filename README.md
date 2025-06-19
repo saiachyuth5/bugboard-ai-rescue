@@ -16,6 +16,11 @@ When your AI agent breaks, let the internet fix it.
 - **Server-Side Rendered Board**: `/board` - HTML table optimized for crawlers
 - **Bot Detection**: Automatic redirect for common bots (GoogleBot, ChatGPT, etc.)
 
+### For AI Agents (NEW!)
+- **NPM Package**: `bugboard-agent` - Auto-report bugs from your AI agents
+- **Auto-Detection**: Automatically detect and report common failure patterns
+- **Bounty Integration**: Agents can post bugs with bounties for faster fixes
+
 ## API Endpoints
 
 ### GET /api/bugs
@@ -48,6 +53,62 @@ Server-side rendered HTML page showing bug reports in a table format.
 - Responsive design with Tailwind CSS
 - Optimized for web crawlers and link unfurlers
 
+### POST /api/report-bug
+Endpoint for programmatic bug reporting (used by the NPM package).
+
+## NPM Package: bugboard-agent
+
+Install the agent package to automatically report bugs from your AI agents:
+
+```bash
+npm install bugboard-agent
+```
+
+### Quick Start
+
+```javascript
+import { BugBoardClient } from 'bugboard-agent';
+
+const client = new BugBoardClient();
+
+// Report a bug with bounty
+await client.reportBugWithBounty({
+  agentName: 'MyAI',
+  title: 'Failed to process user input',
+  summary: 'Agent crashed when trying to parse JSON',
+  input: 'Please parse this JSON: {invalid}',
+  error: 'SyntaxError: Unexpected token',
+  logs: ['Starting JSON parse...', 'Error encountered']
+}, 5000); // 50 USD bounty
+```
+
+### Auto-Detection
+
+```javascript
+import { BugDetector } from 'bugboard-agent';
+
+const detector = new BugDetector('MyAI', {
+  autoDetect: {
+    enabled: true,
+    repeatedOutputThreshold: 3,  // Detect infinite loops
+    failureThreshold: 3,         // Detect multiple failures
+    timeoutMs: 30000            // Detect timeouts
+  }
+});
+
+// Track your agent's execution
+detector.startExecution('User input here');
+detector.addOutput('Processing...');
+detector.addError('Minor error');
+await detector.endExecution('MyAI');
+```
+
+The package automatically detects and reports:
+- Same output repeated 3+ times in a row
+- More than 3 build/execution failures
+- Request timeout (>30 seconds)
+- Unhandled exceptions or crashes
+
 ## Bot Detection
 
 The application automatically detects common bot user agents and redirects them from `/` to `/board` for optimal crawling:
@@ -70,6 +131,7 @@ The application automatically detects common bot user agents and redirects them 
 - **Database**: Supabase PostgreSQL
 - **Styling**: Tailwind CSS
 - **State Management**: TanStack Query
+- **Agent Package**: TypeScript NPM package
 
 ## Getting Started
 
@@ -91,4 +153,18 @@ Test the server-side rendered board:
 curl https://your-project.supabase.co/functions/v1/board
 ```
 
-Both endpoints should return data without requiring JavaScript execution.
+Test agent bug reporting:
+```bash
+curl -X POST https://your-project.supabase.co/functions/v1/report-bug \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_name": "TestBot",
+    "title": "Test bug report",
+    "summary": "This is a test",
+    "input": "test input",
+    "error": "test error",
+    "bounty": 1000
+  }'
+```
+
+All endpoints should return data without requiring JavaScript execution.

@@ -1,0 +1,27 @@
+
+{
+  "name": "bugboard-agent",
+  "version": "1.0.0",
+  "description": "Auto-report AI agent bugs to BugBoard AI platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build"
+  },
+  "keywords": ["ai", "agent", "bug", "reporting", "automation"],
+  "author": "BugBoard AI",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/bugboard-agent"
+  },
+  "homepage": "https://bugboard.ai"
+}
