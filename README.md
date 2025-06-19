@@ -1,73 +1,94 @@
-# Welcome to your Lovable project
 
-## Project info
+# BugBoard AI
 
-**URL**: https://lovable.dev/projects/c7acbdd8-72d6-44e6-8cf7-6a70fadaf59d
+When your AI agent breaks, let the internet fix it.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+### For Human Users
+- **Interactive Dashboard**: View and report AI agent bugs with real-time updates
+- **Bug Reporting**: Submit detailed bug reports with logs and error messages
+- **Bounty System**: Track bounties for bug fixes
+- **Status Tracking**: Monitor bug resolution progress
 
-**Use Lovable**
+### For Bots & Crawlers
+- **JSON API**: `/api/bugs` - Returns recent bugs in JSON format
+- **Server-Side Rendered Board**: `/board` - HTML table optimized for crawlers
+- **Bot Detection**: Automatic redirect for common bots (GoogleBot, ChatGPT, etc.)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c7acbdd8-72d6-44e6-8cf7-6a70fadaf59d) and start prompting.
+## API Endpoints
 
-Changes made via Lovable will be committed automatically to this repo.
+### GET /api/bugs
+Returns the 20 most recent bugs in JSON format:
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```json
+[
+  {
+    "id": "uuid",
+    "title": "Agent fails when linking Supabase",
+    "status": "open",
+    "bounty": 500,
+    "createdAt": "2025-06-18T15:00:22Z"
+  }
+]
 ```
 
-**Edit a file directly in GitHub**
+**Features:**
+- CORS enabled for all origins
+- Returns data from Supabase bugs table
+- Ordered by creation date (newest first)
+- Bounty values in cents
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### GET /board
+Server-side rendered HTML page showing bug reports in a table format.
 
-**Use GitHub Codespaces**
+**Features:**
+- No JavaScript required
+- SEO-friendly HTML structure
+- Responsive design with Tailwind CSS
+- Optimized for web crawlers and link unfurlers
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Bot Detection
 
-## What technologies are used for this project?
+The application automatically detects common bot user agents and redirects them from `/` to `/board` for optimal crawling:
 
-This project is built with:
+- GoogleBot
+- BingBot  
+- ChatGPTBot
+- FacebookExternalHit
+- TwitterBot
+- LinkedInBot
+- SlackBot
+- DiscordBot
+- WhatsApp
+- TelegramBot
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Technology Stack
 
-## How can I deploy this project?
+- **Frontend**: React + TypeScript + Vite
+- **Backend**: Supabase Edge Functions
+- **Database**: Supabase PostgreSQL
+- **Styling**: Tailwind CSS
+- **State Management**: TanStack Query
 
-Simply open [Lovable](https://lovable.dev/projects/c7acbdd8-72d6-44e6-8cf7-6a70fadaf59d) and click on Share -> Publish.
+## Getting Started
 
-## Can I connect a custom domain to my Lovable project?
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up your Supabase project
+4. Deploy Edge Functions
+5. Start development server: `npm run dev`
 
-Yes, you can!
+## Testing Crawler Functionality
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Test the JSON API:
+```bash
+curl https://your-project.supabase.co/functions/v1/bugs
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Test the server-side rendered board:
+```bash
+curl https://your-project.supabase.co/functions/v1/board
+```
+
+Both endpoints should return data without requiring JavaScript execution.

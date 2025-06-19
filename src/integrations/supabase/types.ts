@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bugs: {
+        Row: {
+          agent_name: string
+          bounty: number
+          created_at: string
+          error: string
+          id: string
+          input: string
+          logs: string[] | null
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+          upvotes: number
+        }
+        Insert: {
+          agent_name: string
+          bounty?: number
+          created_at?: string
+          error: string
+          id?: string
+          input: string
+          logs?: string[] | null
+          status?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+          upvotes?: number
+        }
+        Update: {
+          agent_name?: string
+          bounty?: number
+          created_at?: string
+          error?: string
+          id?: string
+          input?: string
+          logs?: string[] | null
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          upvotes?: number
+        }
+        Relationships: []
+      }
       permissions: {
         Row: {
           created_at: string | null

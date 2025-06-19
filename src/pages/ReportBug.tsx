@@ -1,8 +1,11 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const ReportBug = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     agentName: "",
     title: "",
@@ -12,11 +15,53 @@ const ReportBug = () => {
     logs: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Bug report submitted:", formData);
-    // In a real app, this would send to the API
-    alert("Bug reported successfully! (Demo mode)");
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('bugs')
+        .insert({
+          agent_name: formData.agentName,
+          title: formData.title,
+          summary: formData.summary,
+          input: formData.input,
+          error: formData.error,
+          logs: formData.logs ? formData.logs.split('\n').filter(line => line.trim()) : [],
+          status: 'open',
+          bounty: 0,
+          upvotes: 0
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Bug reported successfully!",
+        description: "Your bug report has been submitted and is now visible on the board.",
+      });
+
+      // Reset form
+      setFormData({
+        agentName: "",
+        title: "",
+        summary: "",
+        input: "",
+        error: "",
+        logs: ""
+      });
+    } catch (error) {
+      console.error('Error submitting bug report:', error);
+      toast({
+        title: "Error submitting bug report",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -154,9 +199,10 @@ const ReportBug = () => {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-mono transition-colors"
+              disabled={isSubmitting}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white px-6 py-2 rounded font-mono transition-colors"
             >
-              Submit Bug Report
+              {isSubmitting ? 'Submitting...' : 'Submit Bug Report'}
             </button>
             <Link
               to="/"
