@@ -1,0 +1,49 @@
+
+{
+  "name": "BugBoard Rescue",
+  "slug": "bugboard-rescue",
+  "version": "1.0.0",
+  "description": "Automatically detect and report AI agent bugs to BugBoard when tasks get stuck",
+  "icon": "🐛",
+  "categories": ["debugging", "monitoring", "automation"],
+  "main": "dist/index.js",
+  "configuration": {
+    "type": "object",
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "title": "Enable BugBoard Rescue",
+        "description": "Automatically report bugs when AI agents get stuck",
+        "default": true
+      },
+      "defaultBounty": {
+        "type": "number",
+        "title": "Default Bounty (USD)",
+        "description": "Default bounty amount in USD for reported bugs",
+        "default": 25,
+        "minimum": 0,
+        "maximum": 1000
+      },
+      "retryThreshold": {
+        "type": "number",
+        "title": "Retry Threshold",
+        "description": "Number of retries before reporting a bug",
+        "default": 3,
+        "minimum": 1,
+        "maximum": 10
+      },
+      "apiUrl": {
+        "type": "string",
+        "title": "BugBoard API URL",
+        "description": "Custom BugBoard API endpoint (leave empty for default)",
+        "default": ""
+      }
+    },
+    "required": ["enabled", "defaultBounty", "retryThreshold"]
+  },
+  "permissions": [
+    "task:read",
+    "task:notify",
+    "network:external"
+  ]
+}

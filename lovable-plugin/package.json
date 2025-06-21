@@ -1,0 +1,30 @@
+
+{
+  "name": "@bugboard/lovable-plugin",
+  "version": "1.0.0",
+  "description": "Lovable plugin for automatically detecting and reporting AI agent bugs to BugBoard",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "test": "node test.js"
+  },
+  "keywords": ["lovable", "plugin", "ai", "bug", "reporting", "monitoring"],
+  "author": "BugBoard AI",
+  "license": "MIT",
+  "dependencies": {
+    "bugboard-agent": "file:../package"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "lovable": {
+    "manifest": "./manifest.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/bugboard-lovable-plugin"
+  }
+}
